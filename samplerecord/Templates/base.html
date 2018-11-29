@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Sample Storage</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+   <style>
+
+    body {
+        background-color:"#ffffff";
+        font-size: 150%;
+        margin-top: 2px;
+        margin-left: 10px;
+    }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url "storesample:sample-list" %}">Sample List</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/">Administration</a>
+    </li>
+  </ul>
+</nav> 
+
+{%block variablecontent%}
+
+{%endblock%}
+<hr>
+
+<footer class="container-fluid footer myfooter text-center">
+
+
+<p class=medium> Sample storage v 0.1 by A. Bombardi </p>
+
+</footer>
+
+</body>
+</html>
