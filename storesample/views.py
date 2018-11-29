@@ -4,7 +4,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.utils import timezone
 from django.http import FileResponse
-
+import operator
+from functools import reduce
+from django.db.models import Q
 
 # Create your views here.
 from storesample.models import Sample
@@ -38,3 +40,28 @@ class SampleListView(ListView):
 		context = super().get_context_data(**kwargs)
 		context['now'] = timezone.now()
 		return context
+		
+		
+class SearchSampleListView(SampleListView):
+	#paginate_by = 100 
+	#model = Sample  # if pagination is desired
+	#template_name = 'storesample/samplefilter_list.html'
+	
+		
+	def get_queryset(self):
+		print("I am calling the queryset")
+		allentry = Sample.objects.all() 
+		query = self.request.GET.get('query')
+		if query:
+			query_list=query.split()
+			filteredresults = allentry.filter(
+				reduce(operator.or_,
+					(Q(composition__icontains=query) for query in query_list)) |
+				reduce(operator.or_,
+					(Q(owner__icontains=query) for query in query_list)) 
+				)
+		print("Reusts of the query", filteredresults)
+		return filteredresults
+					 
+				
+			
