@@ -49,17 +49,58 @@ class SearchSampleListView(SampleListView):
 	
 		
 	def get_queryset(self):
-		print("I am calling the queryset")
 		allentry = Sample.objects.all() 
 		query = self.request.GET.get('query')
 		if query:
-			query_list=query.split()
-			filteredresults = allentry.filter(
-				reduce(operator.or_,
-					(Q(composition__icontains=query) for query in query_list)) |
-				reduce(operator.or_,
-					(Q(owner__icontains=query) for query in query_list)) 
-				)
+			if (query.find('|') is not -1) and (query.find('&') is not -1):
+				print("1 case I am using or!!!")
+				query=query.replace('&',' ')
+				query=query.replace('|',' ')
+				query_list=query.split()
+				filteredresults = allentry.filter(
+					reduce(operator.or_,
+						(Q(composition__icontains=query) for query in query_list)) |
+					reduce(operator.or_,
+						(Q(owner__icontains=query) for query in query_list)) |
+					reduce(operator.or_,
+						(Q(samplename__icontains=query) for query in query_list)) 
+					)
+			elif (query.find('|') is not -1) and (query.find('&') is  -1):
+				print("2 case I am using or!!!")
+				query=query.replace('|',' ')
+				query_list=query.split()
+				filteredresults = allentry.filter(
+					reduce(operator.or_,
+						(Q(composition__icontains=query) for query in query_list)) |
+					reduce(operator.or_,
+						(Q(owner__icontains=query) for query in query_list)) |
+					reduce(operator.or_,
+						(Q(samplename__icontains=query) for query in query_list)) 
+					)				
+			elif (query.find('|') is  -1) and (query.find('&') is not -1):
+				print("3 case I am using &!!!")
+				query=query.replace('&',' ')
+				query_list=query.split()
+				filteredresults = allentry.filter(
+					reduce(operator.or_,
+						(Q(composition__icontains=query) for query in query_list)) &
+					reduce(operator.or_,
+						(Q(owner__icontains=query) for query in query_list)) &
+					reduce(operator.or_,
+						(Q(samplename__icontains=query) for query in query_list)) 
+					)
+			elif (query.find('|') is  -1) and (query.find('&') is -1):
+				print("4 case I am using &!!!")			
+				query_list=query.split()
+				filteredresults = allentry.filter(
+					reduce(operator.or_,
+						(Q(composition__icontains=query) for query in query_list)) |
+					reduce(operator.or_,
+						(Q(owner__icontains=query) for query in query_list)) |
+					reduce(operator.or_,
+						(Q(samplename__icontains=query) for query in query_list)) 
+						)
+
 		print("Reusts of the query", filteredresults)
 		return filteredresults
 					 

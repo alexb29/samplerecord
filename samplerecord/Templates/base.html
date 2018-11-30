@@ -39,7 +39,7 @@
  <ul class="navbar-nav navbar-right">   
    <li style="float:right" >
     <form class="form-inline my-2 my-lg-0" id="searchform" action="{% url 'storesample:filtered-list' %}" method="get" accept-charset="utf-8">
-      <input type="text" placeholder="Search.." name="query">
+      <input type="text" placeholder="Search..." name="query">
       <button type="submit">Submit</button>
     </form>
    </li >
@@ -47,7 +47,11 @@
    
     
   </ul>
-</nav> 
+</nav>
+
+<small> to search enter one or more word fragments separated by space and one logical (| , &) operators </small>
+<small> e.g. ale &  ru, ale | ru  V, ale ru . The default operator is or (|) </small>
+
 
 {%block variablecontent%}
 
