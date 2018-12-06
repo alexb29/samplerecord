@@ -5,12 +5,13 @@
 <div class="row">
  <div class="col-sm-8">
 	 
-	 <h1>{{object.samplename}} {{ object.composition }}</h1>
+	 <h1>{{object.samplename}} </h1>
 	    	  <table class="table">
        <tbody>
-         <tr class="table-success">
-<td> <h3> Currently in storage? </h3> </td> 
-<td>{{object.instorage }} </h3></td>
+
+<tr class="table-success">
+<td> <h3> Composition: {{ object.composition }} </h3> </td> 
+<td>Id: {{object.randomidentifier}}</h3></td>
 </tr>
 
 
@@ -25,14 +26,24 @@
 
 <tr class="table-warning"> <td>Origin: {{object.origin}} </td><td> Batch: {{object.batch}} </td></tr>
 <tr class="table-warning"><td>Beamtime: {{object.beamtime}} </td><td> Characterisation: {{object.characterisation}} </td> </tr>
+<tr class="table-warning"><td>Characterisation: {{object.characterisation}} </td><td> Temporarily at: {{object.temporarylocation}} </td> </tr>
+<tr class="table-warning">
+<td> <h3> in storage? </h3> </td> 
+<td>{{object.instorage }} </h3></td>
+</tr>
 </table>
 
 <h1>Other info:</h1> <p> {{ object.otherinfo }} {{object.reports_set.pdffiles.url}}</p>
 </div>
 
+
 <div class="col-sm-4">
 <div class="grid-item">
+	{%if object.picture %} 
     <img src="{{object.picture.url }}" alt="add alt field to picture field" style="width:100%">
+    {%else %}
+    <p> No pictures associated with the sample!</p>
+    {% endif %}
 </div>
     </div>
     </div>
@@ -52,6 +63,7 @@
 </div>
 <div class="col-sm-6">
 {% for report in object.reports_set.all %}
+<h2>Report: {{report.beamtime}}</h2>
 <object data="{{report.pdffiles.url}}" type="application/pdf" width="100%" height="100%">
 <iframe src="{{report.pdffiles.url}}" width="100%" height="100%" style="border: none;">
 This browser does not support PDFs. Please download the PDF to view it: 

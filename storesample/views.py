@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.edit import UpdateView
+
 from django.utils import timezone
+from django.urls import reverse_lazy
 from django.http import FileResponse
 import operator
 from functools import reduce
@@ -49,60 +52,28 @@ class SearchSampleListView(SampleListView):
 	
 		
 	def get_queryset(self):
+		print("I am calling the queryset")
 		allentry = Sample.objects.all() 
 		query = self.request.GET.get('query')
 		if query:
-			if (query.find('|') is not -1) and (query.find('&') is not -1):
-				print("1 case I am using or!!!")
-				query=query.replace('&',' ')
-				query=query.replace('|',' ')
-				query_list=query.split()
-				filteredresults = allentry.filter(
-					reduce(operator.or_,
-						(Q(composition__icontains=query) for query in query_list)) |
-					reduce(operator.or_,
-						(Q(owner__icontains=query) for query in query_list)) |
-					reduce(operator.or_,
-						(Q(samplename__icontains=query) for query in query_list)) 
-					)
-			elif (query.find('|') is not -1) and (query.find('&') is  -1):
-				print("2 case I am using or!!!")
-				query=query.replace('|',' ')
-				query_list=query.split()
-				filteredresults = allentry.filter(
-					reduce(operator.or_,
-						(Q(composition__icontains=query) for query in query_list)) |
-					reduce(operator.or_,
-						(Q(owner__icontains=query) for query in query_list)) |
-					reduce(operator.or_,
-						(Q(samplename__icontains=query) for query in query_list)) 
-					)				
-			elif (query.find('|') is  -1) and (query.find('&') is not -1):
-				print("3 case I am using &!!!")
-				query=query.replace('&',' ')
-				query_list=query.split()
-				filteredresults = allentry.filter(
-					reduce(operator.or_,
-						(Q(composition__icontains=query) for query in query_list)) &
-					reduce(operator.or_,
-						(Q(owner__icontains=query) for query in query_list)) &
-					reduce(operator.or_,
-						(Q(samplename__icontains=query) for query in query_list)) 
-					)
-			elif (query.find('|') is  -1) and (query.find('&') is -1):
-				print("4 case I am using &!!!")			
-				query_list=query.split()
-				filteredresults = allentry.filter(
-					reduce(operator.or_,
-						(Q(composition__icontains=query) for query in query_list)) |
-					reduce(operator.or_,
-						(Q(owner__icontains=query) for query in query_list)) |
-					reduce(operator.or_,
-						(Q(samplename__icontains=query) for query in query_list)) 
-						)
-
+			query_list=query.split()
+			filteredresults = allentry.filter(
+				reduce(operator.or_,
+					(Q(composition__icontains=query) for query in query_list)) |
+				reduce(operator.or_,
+					(Q(owner__icontains=query) for query in query_list)) 
+				)
 		print("Reusts of the query", filteredresults)
 		return filteredresults
 					 
 				
-			
+class UpdateSample(UpdateView): 
+	model = Sample
+	fields = [
+		'instorage',
+		'location',
+		'temporarylocation'] 
+		
+	success_url = reverse_lazy('storesample:sample-list')  
+
+

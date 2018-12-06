@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block variablecontent%}
-<h1>Samples</h1>
 
+
+<h1>Samples</h1>
 <div style="overflow-x:auto;">
    	  <table class="table table-hover">
        <thead>
@@ -14,20 +15,20 @@
            <th>Tel.   </th>
            <th>Location </th> 
            <th>In storage</th>
-           <th>Registered </th> 
+           <th>Change location </th> 
        </thead>
        <tbody>
         {% for sample in object_list %}
 
          <tr class="table-active table-hover">
-   		   <td><a href="{% url "storesample:sample-detail" sample.pk %}"> {{sample.pk}} </a> </td>
+   		   <td><a href="{% url "storesample:sample-detail" sample.pk %}"> {{sample.randomidentifier}} </a> </td>
            <th>{{sample.samplename}} </a></th>
            <th>{{sample.composition}}</th>
            <th>{{sample.owner}}</th>
            <th>{{sample.Telephone}}</th>
            <th>{{sample.location}}</th>
            <th>{{sample.instorage}}</th>
-           <th>{{sample.date_added}}</th>
+           <th><a href="{% url "storesample:sample-update" sample.pk %}">Take in/out...</th>
          </tr>
 
         {% endfor %}

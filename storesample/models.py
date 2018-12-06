@@ -1,10 +1,16 @@
 from django.db import models
-
+import string, random
 # Create your models here.
+
+
+def generatecode():
+	return "".join([random.choice(string.ascii_lowercase) for count in range(5)])
+
 
 class Sample(models.Model):
 	def __str__(self):
 		return str(self.pk)+' '+self.composition
+
 		
 	INSTORAGE_CHOICES = (
 		('Yes', 'Yes'),
@@ -13,21 +19,24 @@ class Sample(models.Model):
 	LOCATION_CHOICES = (
 		('Cabinet 1', 'Cabinet 1'),
 		('Cabinet 2', 'Cabinet 2'),
+		('Other','Other')
 		)	
 	
 	samplename  = models.CharField("Sample Name", max_length=100,blank=True,null=True)	
 	composition = models.CharField("composition", max_length=100)
 	otherinfo = models.TextField("Other Info", max_length=500,blank=True,null=True)
-	numberOfBoxes = models.IntegerField("Number of Boxes")
-	numberOfSamples = models.IntegerField("Number of Samples")
+	numberOfBoxes = models.IntegerField("Number of Boxes",default=1)
+	numberOfSamples = models.IntegerField("Number of Samples",default=1)
 	location = models.CharField(
-        max_length=9,
-        choices=LOCATION_CHOICES,
-        default='Cabinet 1'
-        )
+		max_length=9,
+		choices=LOCATION_CHOICES,
+		default='Cabinet 1')
+	
+	temporarylocation=models.CharField("Temporarily at", max_length=100,blank=True,null=True)
+
 	owner = models.CharField("Owner", max_length=100)
 	Telephone =  models.CharField("telephone", max_length=12)
-	picture = models.ImageField(upload_to='uploads')
+	picture = models.ImageField(upload_to='uploads', blank=True,null=True)
 	origin = models.CharField("Origin", max_length=100,default='Unknown')
 	batch =  models.CharField("Batch", max_length=100,default='Unknown')
 	beamtime = models.CharField("Beamtime", max_length=100,blank=True,null=True)
@@ -35,10 +44,15 @@ class Sample(models.Model):
 	date_added = models.DateTimeField(auto_now=True)
 
 	instorage = models.CharField(
-        max_length=9,
-        choices=INSTORAGE_CHOICES,
-        default='No'
-        )
+		max_length=9,
+		choices=INSTORAGE_CHOICES,
+		default='No'
+		)
+
+	randomidentifier = models.CharField(
+		"idstring",max_length=5,editable=False ,unique=True,default=generatecode)
+
+	
 
 class SampleCif(models.Model):
 		
