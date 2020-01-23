@@ -42,6 +42,7 @@ class Sample(models.Model):
 	beamtime = models.CharField("Beamtime", max_length=100,blank=True,null=True)
 	characterisation = models.CharField("Characterisation", max_length=100,blank=True,null=True)
 	date_added = models.DateTimeField(auto_now=True)
+	samplesmell  = models.CharField("Sample Smell", max_length=100,blank=True,null=True)
 
 	instorage = models.CharField(
 		max_length=9,

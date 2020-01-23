@@ -70,6 +70,7 @@ class SearchSampleListView(SampleListView):
 class UpdateSample(UpdateView): 
 	model = Sample
 	fields = [
+		'owner',
 		'instorage',
 		'location',
 		'temporarylocation'] 

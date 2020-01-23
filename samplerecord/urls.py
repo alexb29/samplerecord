@@ -25,7 +25,7 @@ admin.site.site_title = "Admin your samples "
 admin.site.index_title = "Welcome to your account"
 
 urlpatterns = [
-	path('',  SampleListView.as_view()),
+    path('',  SampleListView.as_view()),
     path('admin/', admin.site.urls),
     path('samples/', include('storesample.urls', namespace="storesample")),
     #path('/',include('storesample.urls', namespace="storesample")),
