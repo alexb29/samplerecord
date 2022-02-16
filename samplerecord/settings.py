@@ -26,7 +26,7 @@ SECRET_KEY = 'q8auvtjda^4@)&0+ba5ox$6!vi34%sypv8@155va9&_x@#bjeo'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Application definition
 
@@ -68,7 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
-                
+
             ],
         },
     },

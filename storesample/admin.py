@@ -1,5 +1,5 @@
 from django.contrib import admin
-from storesample.models import Sample, SampleCif, Reports 
+from storesample.models import Sample, SampleCif, Reports,TransitionTemperatures,SamplePictures
 
 
 class SampleCifInLine(admin.StackedInline):
@@ -9,15 +9,25 @@ class SampleCifInLine(admin.StackedInline):
 class ReportInLine(admin.StackedInline):
 	model = Reports
 	extra = 1
-	
 
-class SampleAdmin(admin.ModelAdmin):  
-	
-	inlines=[ SampleCifInLine, ReportInLine]
-	
+class TransitionTemperaturesInLine(admin.StackedInline):
+	model = TransitionTemperatures
+	extra = 0
+
+
+class SamplePicturesInLine(admin.StackedInline):
+	model = SamplePictures
+	extra = 1
+
+class SampleAdmin(admin.ModelAdmin):
+
+	inlines=[ SamplePicturesInLine,SampleCifInLine, ReportInLine,TransitionTemperaturesInLine]
+
 
 
 # Register your models here.
 admin.site.register(Sample,SampleAdmin)
 admin.site.register(SampleCif)
 admin.site.register(Reports)
+admin.site.register(SamplePictures)
+admin.site.register(TransitionTemperatures)

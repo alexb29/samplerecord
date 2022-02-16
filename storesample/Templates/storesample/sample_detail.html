@@ -4,13 +4,13 @@
 {% block variablecontent%}
 <div class="row">
  <div class="col-sm-8">
-	 
+
 	 <h1>{{object.samplename}} </h1>
 	    	  <table class="table">
        <tbody>
 
 <tr class="table-success">
-<td> <h3> Composition: {{ object.composition }} </h3> </td> 
+<td> <h3> Composition: {{ object.composition }} </h3> </td>
 <td>Id: {{object.randomidentifier}}</h3></td>
 </tr>
 
@@ -19,19 +19,34 @@
 
 <tr class="table-warning"><td>Responsible: {{ object.owner }} </td><td> Tel. {{object.Telephone}}</td>
 <tr class="table-warning">
-	
-<td>First Stored: {{ object.date_added|date }}</td><td>Location: {{object.location}} </td>  
+
+<td>First Stored: {{ object.date_added|date }}</td><td>Location: {{object.location}} </td>
 <tr class="table-warning"><td>Number of boxes: {{object.numberOfBoxes}} </td><td>Number of Samples: {{object.numberOfSamples}} </td>
 </tr>
 
 <tr class="table-warning"> <td>Origin: {{object.origin}} </td><td> Batch: {{object.batch}} </td></tr>
-<tr class="table-warning"><td>Beamtime: {{object.beamtime}} </td><td> Characterisation: {{object.characterisation}} </td> </tr>
 <tr class="table-warning"><td>Characterisation: {{object.characterisation}} </td><td> Temporarily at: {{object.temporarylocation}} </td> </tr>
 <tr class="table-warning">
-<td> <h3> in storage? </h3> </td> 
+<td> <h3> in storage? </h3> </td>
 <td>{{object.instorage }} </h3></td>
 </tr>
+{%if object.transitiontemperatures_set.all %}
+<tr class="table-success">
+    <td><h3>Transition temperatures</h3></td> <td><h3>Transition Type</h3></td>
+    {% for TT in object.transitiontemperatures_set.all %}
+    <tr class="table-warning">
+        <td> <h3> T{{forloop.counter}} {{TT.Temperature}} K </h3> </td>
+        <td>{{TT.TransitionType }}-{{TT.OrderingType }} {{TT.PropagationVector }}</h3></td>
+</tr>
+    {%endfor%}
+{%endif%}
+
+
 </table>
+
+
+
+
 
 <h1>Other info:</h1> <p> {{ object.otherinfo }} {{object.reports_set.pdffiles.url}}</p>
 </div>
@@ -39,22 +54,44 @@
 
 <div class="col-sm-4">
 <div class="grid-item">
-	{%if object.picture %} 
+	{%if object.picture %}
     <img src="{{object.picture.url }}" alt="add alt field to picture field" style="width:100%">
     {%else %}
     <p> No pictures associated with the sample!</p>
     {% endif %}
 </div>
     </div>
+
+
+{% if object.samplepictures_set.all %}
+    <div>
+    <h1>Pictures of the Sample:</h1>
+    <br>
     </div>
+    {% for sampleimage in object.samplepictures_set.all %}
+    <div class="responsive">
+      <div class="gallery">
+        <a target="_blank" href="{{sampleimage.picturefiles.url}}">
+          <img src="{{sampleimage.picturefiles.url}}" alt="sample pictures" width="600" height="400">
+        </a>
+        <div class="desc">Picture {{forloop.counter}} </div>
+      </div>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    </div>
+
+
+
 
 <br>
 
 
-<br>  
-    
+<br>
+
      <div class="row">
-     <div class="col-sm-6 ">
+    <div class="col-sm-6 ">
 	{% for mycif in object.samplecif_set.all %}
 	<p><a href="{{mycif.ciffiles.url}}"> Download cif </a></p>
 	{%endfor %}
@@ -62,17 +99,20 @@
 
 </div>
 <div class="col-sm-6">
-{% for report in object.reports_set.all %}
-<h2>Report: {{report.beamtime}}</h2>
-<object data="{{report.pdffiles.url}}" type="application/pdf" width="100%" height="100%">
-<iframe src="{{report.pdffiles.url}}" width="100%" height="100%" style="border: none;">
-This browser does not support PDFs. Please download the PDF to view it: 
-<a href="{{report.pdffiles.url}}">Download PDF</a>
-</iframe>
-</object>
-{% endfor %}
+    {%if object.reports_set.all %}
+    {% for report in object.reports_set.all %}
+    <h2>Session Number: {{report.beamtime}}</h2>
+    {%if report.urllink %}
+        <a href="{{report.urllink}}" target="_blank">Go to session Online logbook</a>
+        <br>
+    {% endif %}
+    <a href="{{report.pdffiles.url}}" target="_blank">Go to PDF logbook</a>
+    {% endfor %}
+    {% else %}
+    <h2>Not measured</h2>
+    {% endif %}
+
 </div>
 </div>
 
 {% endblock %}
-
