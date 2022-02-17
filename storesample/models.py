@@ -17,8 +17,10 @@ class Sample(models.Model):
 		('No', 'No'),
 		)
 	LOCATION_CHOICES = (
-		('Cabinet 1', 'Cabinet 1'),
-		('Cabinet 2', 'Cabinet 2'),
+		('Cabinet A', 'Cabinet A'),
+		('Cabinet B', 'Cabinet B'),
+		('Cabinet C', 'Cabinet C'),
+		('Cabinet D', 'Cabinet D'),
 		('Other','Other')
 		)
 
@@ -32,7 +34,7 @@ class Sample(models.Model):
 		choices=LOCATION_CHOICES,
 		default='Cabinet 1')
 
-	temporarylocation=models.CharField("Temporarily at", max_length=100,default='N/A')
+	Removedby=models.CharField("Removed by", max_length=100,default='N/A')
 
 	owner = models.CharField("Owner", max_length=100)
 	Telephone =  models.CharField("telephone", max_length=12)
@@ -118,8 +120,8 @@ class TransitionTemperatures(models.Model):
 		choices=ORDERING_CHOICES,
 		default='N/A')
 
-	PropagationVector = models.JSONField('Propagation Vector',
-		default=dict,
-		help_text = """{"K1":"[1/2,1/2,1/2]"}""",
+	PropagationVector = models.CharField('Propagation Vector',
+		max_length=20,
+		help_text = "[1/2,1/2,1/2]",
 		blank=True,
 		null=True)

@@ -9,6 +9,7 @@ class SampleCifInLine(admin.StackedInline):
 class ReportInLine(admin.StackedInline):
 	model = Reports
 	extra = 1
+	
 
 class TransitionTemperaturesInLine(admin.StackedInline):
 	model = TransitionTemperatures
@@ -20,6 +21,7 @@ class SamplePicturesInLine(admin.StackedInline):
 	extra = 1
 
 class SampleAdmin(admin.ModelAdmin):
+	list_display = ['samplename', 'composition', 'owner']
 
 	inlines=[ SamplePicturesInLine,SampleCifInLine, ReportInLine,TransitionTemperaturesInLine]
 
